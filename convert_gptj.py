@@ -80,7 +80,7 @@ if __name__ == "__main__":
             "please provide a valid `bucket_name`, when running `python convert_gptj.py --bucket_name` "
         )
         
-     if not args.model_checkpoint:
+    if not args.model_checkpoint:
         raise ValueError(
             "please provide a valid `model_checkpoint`, when running `python convert_gptj.py --model_checkpoint` "
         )
