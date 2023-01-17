@@ -30,10 +30,10 @@ def convert(bucket_name="hf-sagemaker-inference"):
     os.makedirs(dst_inference_script, exist_ok=True)
 
     # load fp 16 model
-    print(f"Loading model from {model_ckeckpoint} repo")
+    print("Loading model from 'Cedille/fr-boris' repo")
     model = GPTJForCausalLM.from_pretrained(
        # "EleutherAI/gpt-j-6B",
-        model_checkpoint,
+        "Cedille/fr-boris",
         #revision="float16", 
         torch_dtype=torch.float16
     )
@@ -42,7 +42,7 @@ def convert(bucket_name="hf-sagemaker-inference"):
 
     print("saving tokenizer")
     #tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
-    okenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+    okenizer = AutoTokenizer.from_pretrained("Cedille/fr-boris")
     tokenizer.save_pretrained(model_save_dir)
 
     # copy inference script
@@ -67,7 +67,6 @@ def convert(bucket_name="hf-sagemaker-inference"):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bucket_name", type=str, default=None)
-    parser.add_argument("--model_checkpoint", type=str, default=None)
     return parser.parse_args()
 
 
@@ -79,11 +78,6 @@ if __name__ == "__main__":
         raise ValueError(
             "please provide a valid `bucket_name`, when running `python convert_gptj.py --bucket_name` "
         )
-        
-    if not args.model_checkpoint:
-        raise ValueError(
-            "please provide a valid `model_checkpoint`, when running `python convert_gptj.py --model_checkpoint` "
-        )
 
     # read config file
-    convert(args.bucket_name, args.model_checkpoint)
+    convert(args.bucket_name)
